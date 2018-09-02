@@ -1,0 +1,9 @@
+computeSourcePath=true
+contextsDir=C\:\\eclipse\\pleiades\\tomcat\\6\\conf\\Catalina\\localhost
+eclipse.preferences.version=1
+managerUrl=http\://localhost\:8080/manager
+projectsInSourcePath=basic;
+tomcatConfigFile=C\:\\eclipse\\pleiades\\tomcat\\6\\conf\\server.xml
+tomcatDir=C\:\\eclipse\\pleiades\\tomcat\\6
+tomcatJRE=1402409092356
+tomcatVersion=tomcatV6

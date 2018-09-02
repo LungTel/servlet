@@ -1,0 +1,242 @@
+
+-------------Tomcat6.0-----------------
+
+・ファイル > 新規 > その他 > Java > Tomcatプロジェクト
+・src, bin ファイルを削除
+・web.xmlを配置
+	内容
+	<?xml version="1.0" encoding="Shift_JIS"?>
+	<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+	   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+	  version="2.4">
+
+		<servlet>
+		 <servlet-name>HelloServlet</servlet-name>
+		 <servlet-class>foo.HelloServlet</servlet-class>
+		</servlet>
+
+		<servlet-mapping>
+		 <servlet-name>HelloServlet</servlet-name>
+		 <url-pattern>/HelloServlet</url-pattern>
+		</servlet-mapping>
+
+	</web-app>
+
+------------------------入門編----------------------------
+
+■環境構築
+
+★【EclipseによるWebアプリケーションの開発】
+参考図書 : 基礎からのサーブレット/JSP
+Page : p444-p460
+
+【EclipseとTomcatの連携】
+http://nntoa.web.fc2.com/java/1/4.html#10
+
+【Eclipse+Tomcat連携】
+http://www.searchman.info/java_eclipse/1090.html
+
+
+■WEBの参照URL
+
+http://localhost:8080/basic/test.jsp
+http://localhost:8080/basic/hello.jsp
+http://localhost:8080/basic/input/echo.jsp
+http://localhost:8080/basic/input/echo2.jsp
+http://localhost:8080/basic/input/method.jsp
+http://localhost:8080/basic/input/param.jsp
+http://localhost:8080/basic/validate/eto.jsp
+http://localhost:8080/basic/validate/eto2.jsp
+http://localhost:8080/basic/servlet/dispatch.ForwardServletA
+http://localhost:8080/basic/servlet/dispatch.ForwardServlet2
+http://localhost:8080/basic/servlet/dispatch.RandomWalkServlet
+http://localhost:8080/basic/servlet/reqattr.ServletA
+http://localhost:8080/basic/servlet/reqattr.Servlet2A
+http://localhost:8080/basic/servlet/reqattr.Servlet3A
+http://localhost:8080/basic/reqattr/guess.jsp
+http://localhost:8080/basic/servlet/session.CounterServlet
+http://localhost:8080/basic/servlet/session.SessionListServlet
+
+
+	※自宅内LANの外部PCの場合
+	http://IPadress:8080/basic/test.jsp
+	例)http://192.168.11.6:8080/basic/test.jsp
+
+
+■URLの詳細説明
+http://
+	HTTPプロトコル（通信規約）を使用し
+	 →Request,Responseのことを指す
+
+localhost:8080
+	Ethernetは、ローカルサーバーを指し、ポートを8080に設定した
+	　→ローカルサーバー : localhost
+	    webサーバー（全国） : www
+
+	  →デーモンのIDみたいなもの : 8080(httpのサーバーを使用する際のID)
+
+basic
+	コンテキストルート : プロジェクトに設定している（新規プロジェクト生成時に設定済み）
+
+hello.jsp
+	コンテキストルート配下のファイルを指す
+	サーブレットの際は、web.xmlに記載することで呼出する（コール）
+
+
+前の設定
+ウィンドウ > 設定 > Tomcat > Tomcatホーム
+C:\eclipse\pleiades\tomcat\6
+
+
+
+【配置場所の問題】
+誤り ： WEB-INF/lib/web.xml
+正しい ： WEB-INF/web.xml
+
+
+■Invokerの設定（web.xmlの省略）
+Tomcat6.0まで可能
+
+【参考URL】
+https://www.javadrive.jp/servlet/webxml/index3.html
+
+
+■Tomcatのデコード（2進数→文字へ） (echo2.jsp)
+今まで日本語対応：WEB提出→エンコード(文字→2進数） java処理　（Windows31J指定) →デコード　WEB表示
+今回はGETで送られるURLの文字列のデコードのため：上記と同じ→URL部に送信（日本語不可なため2進数、文字化け）→
+WEB表示
+
+そのため、URL部をsetCharacterEncoding()を依存させる設定を行う
+C:\eclipse\pleiades\tomcat\6\conf/server.xml
+追記-最終行のみ
+ <Connector port="8080" protocol="HTTP/1.1"
+               connectionTimeout="20000"
+               redirectPort="8443"
+		useBodyEncodingForURI = "true" />
+
+
+-----------------------------------------/入門編--------------------------------------------
+
+-----------------------------------------基礎編---------------------------------------------
+
+
+■サーブレット_エラーチェックの観点(eto2.jsp)
+・必須チェック
+　→未入力（nullか文字列の長さが0）であれば、エラーメッセージを表示
+
+・型チェック
+　→入力された値が指定された型でなかれば、エラーメッセージを表示
+
+
+■Webサーバーの開放の追加
+コントロールパネル > システムとセキュリティ > Windowsファイアフォール > 詳細設定
+・受信の規則 > 新しい規則
+・送信の規則 > 新しい規則
+
+下記、内容で設定する
+
+名前 ： Webサーバー
+プロファイル ： プライベート
+ローカルポート ： 8080
+説明 ： 自宅内LANでの接続確認
+
+【参考URL】
+http://yakudate.com/win10-port-open/
+
+
+■doGetとdoPost (input/method.jsp)
+doGet→リンクから呼び出、フォームからの指定で呼び出、HTTP通信の値はURLのパラメータに依存して見える
+doPost→フォームからの指定で呼び出、HTTP通信の値はBODY部のパラメータに依存して見える
+
+
+■JSPのフィルター機能(filter)
+JSPやサーブレット処理の前に位置しており、実行前、後に、リクエスト、レスポンスに対して任意の処理を行う
+
+【実装観点】
+・javax.servlet,Filterインタフェースを実装したフィルタクラスを作成
+  →初期化、フィルタ処理、終了処理は必ず、オーバーライドする必要がある
+    init
+    doFilter
+    destroy
+ ※javax.servlet.FilterConfig (initメソッドに引数に指定されているインタフェース、
+                               web.xmlの初期化パラメータ取得の際、使用、EncodingFilter2.java）
+ ※javax.servlet.FilterChain(doFilterメソッドの引数に指定されているインタフェース、複数のフィルタを呼出を定義、
+                             次のフィルターを呼出すためのインタフェースのメソッド：doFilter(同じ）)
+
+・web.xmlに記述
+
+■JSPの画面遷移(dispatch)
+javax.servlet.RequestDispatcherインタフェースを利用している
+ HttpServletRequest.getRequestDispatcher()で取得ができ、forward(),include()のようなメソッド使ってリクエストを転送する
+
+	フォワード ： 転送先のリソースに出力処理を任せる
+	インクルード : 転送先のリソースの出力結果をインクルードする（抱合する）
+	リダイレクト： 頻度：少、response時に「次はここにアクセスしてね」と一度処理を戻す
+
+	public void forward(...
+	public void include(...
+	response.sendRedirect(request.getContextPath() + "/redirext.html");
+	response.sendRedirect("http://yahoo.co.jp");
+
+
+■オブジェクトのスコープ(requattr)
+
+スコープ
+リクエスト
+
+		範囲
+		リクエスト
+
+				例
+				サーブレットの処理結果の変数をJSPで利用する
+
+スコープ
+セッション
+
+		範囲
+		同じクライアント
+
+				例
+				ショッピングカード
+
+スコープ
+アプリケーション/コンテキスト
+
+		範囲
+		同じWebアプリケーション
+
+				例
+				データソース、メッセージリソース
+
+対応するクラス
+リクエスト  javax.servlet.http.HttpServletRequestインタフェース
+セッション  javax.servlet.http.HttpSessionインタフェース
+アプリケーション  javax.servlet.ServletContextインタフェース
+
+スコープのオブジェクトを操作するメソッド
+Obejct getAttribute(String name)
+　→引数nameで指定したオブジェクトを取得する
+
+void setAttribute(String name, Object value)
+　→引数valueで指定したオブジェクトnameという名前で登録する
+
+void removeAttribute(String name)
+　→引数nameで指定したオブジェクトを削除する
+
+Enumeration getAttributeNames()
+　→登録されているnameの一覧を返す
+
+
+■セッション(session)
+HTTPはもともとWebサーバーから静的なコンテンツを取得するだけの単純なプロトコルでした
+ショッピングサイトを実現するためには、ユーザーごとの状態を保持する仕組みが必要となりました
+この「ユーザーごとに状態を保持する仕組み」をセッションと呼びます
+
+
+-------------------------もっとサーブレットについて-------------------------------
+
+
+
+

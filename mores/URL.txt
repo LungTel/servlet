@@ -1,0 +1,479 @@
+
+-------------Tomcat6.0-----------------
+
+
+-------------------------もっとサーブレットについて-------------------------------
+
+■WEBの参照URL
+http://localhost:8080/mores/servlet/app.LifeCycleServlet
+http://localhost:8080/mores/servlet/app.ApplicationCounterServlet
+http://localhost:8080/mores/servlet/app.RoughCounterServlet
+http://localhost:8080/mores/servlet/init.InitParamServlet
+http://localhost:8080/mores/servlet/init.AppInitParamServlet
+http://localhost:8080/mores/servlet/init.ContextFileServlet
+http://localhost:8080/mores/servlet/init.ClasspathFileServlet
+http://localhost:8080/mores/servlet/init.BBSServlet
+http://localhost:8080/mores/servlet/init.BBSServlet2
+http://localhost:8080/mores/servlet/http.UserInfoServlet
+http://localhost:8080/mores/servlet/http.RedirectServlet
+http://localhost:8080/mores/servlet/http.BBSServlet3
+http://localhost:8080/mores/servlet/cookie.CookieCounterServlet
+http://localhost:8080/mores/servlet/cookie.CounterServlet2
+http://localhost:8080/mores/servlet/cookie.CookieListServlet
+http://localhost:8080/mores/servlet/cookie.BBSServlet4
+http://localhost:8080/manager/html/
+
+■Invokerの設定（web.xmlの省略）
+Tomcat6.0まで可能
+
+【参考URL】
+https://www.javadrive.jp/servlet/webxml/index3.html
+
+
+■サーブレットのライフサイクル(LifeCycleServlet)
+・初期化
+		→init()
+		※通常、最初のリクエスト時に呼ばれる、このように必要になるまで初期化を遅らせる処理を遅延初期化
+		  (Lazy Loading)と呼びます。遅延初期化を行わず、最初にinit()を呼び出す場合、p227の<load-on-startup>を参照
+
+・リクエスト時
+		→service() → doGet() または doPost()
+
+・終了時
+		→destroy()
+
+
+■アプリケーションスコープ(ApplicationCounterServlet)
+・共通に利用する読み取り専用のデータを格納することが多い
+
+オブジェクト→javax.servlet.ServletContextインタフェース
+
+		メソッド
+		public ServletContext getServletContext()
+		  →web.xml
+
+			スコープのServletContextオブジェクトの属性を操作するメソッド
+			Obejct getAttribute(String name)
+			  →引数nameで指定したオブジェクトを取得する
+
+			void setAttribute(String name, Object value)
+			  →引数valueで指定したオブジェクトnameという名前で登録する
+
+			void removeAttribute(String name)
+			  →引数nameで指定したオブジェクトを削除する
+
+			Enumeration getAttributeNames()
+			  →登録されているnameの一覧を返す
+
+
+■シングルインスタンス・マルチスレッド(RoughCounterServlet、スレッドセーフではない)
+・単一のクライアントからの利用だけでなく、同時に複数のクライアントからアクセスされる可能性
+  →一つのインスタンスが使いまわされ、メモリ内に常駐し、同じサーブレットのリクエストに対して、
+    同じインスタンスが利用される
+
+・そのため、サーブレット内のフィールドは複数のリクエスト間で共有されるため、読み取り専用データや定数以外は
+  サーブレットのフィールドに定義すべきではありません
+
+・サーブレットは「一つのインスタンス」「マルチスレッド（複数のリクエスト）」のため、
+  「シングルインスタンス・マルチスレッド」モデルと呼ばれる
+
+【スレッド・セーフか否か】
+スレッドセーフ
+	ローカル変数
+	リクエスト属性
+	ページ属性
+
+スレッドセーフではない
+	インスタンス変数
+	static変数
+	セッション属性
+	アプリケーション属性
+
+
+■外部ファイルの読み込み
+
+【サーブレットの初期化パラメータ】(InitParamServlet)
+・web.xmlに<init-param>を設定する
+
+・javax.servlet.ServletConfigインタフェースのServletConfigオブジェクトの取得メソッド
+  →public ServletConfig getServletConfig()
+
+		String getInitParameter(String name)
+			→引数nameの名前を持つパラメータの値を取得する
+
+		Enumeration getInitParameterNames()
+			→パラメータ名の一覧を取得する
+
+
+【アプリケーションの初期化パラメータ】(AppInitParamServlet)
+・web.xmlに<context-param>を設定する
+
+・ServletContextインタフェースの利用
+  →getServletContext()
+    詳しくは、p209を参照
+
+		String getInitParameter(String name)
+			→引数nameの名前を持つパラメータの値を取得する
+
+		Enumeration getInitParameterNames()
+			→パラメータ名の一覧を取得する
+
+
+【初期化パラメータのその他の話題】
+・initメソッドは、2つがある
+  →public void init
+    public void init(ServletConfig config)
+    ※引数を取るメソッドをオーバーライドする場合、super.init(config)を呼び出す必要がある
+
+・web.xmlの<load-on-startup>
+  →init()が呼ばれるのは最初にサーブレットがインスタンス化されたとき、「最初のリクエスト」があったときです。
+    しかし、初期化処理を先に行っておきたい場合があります。<load-on-startup>要素を設定すると、Webアプリケーションの
+    起動時にサーブレットもロードされます。要素の設定値は0以上の数字で数が小さい方が先にロードされます。
+
+例）
+	<servlet>
+	 <servlet-name>HelloServlet</servlet-name>
+	 <servlet-class>foo.HelloServlet</servlet-class>
+	 <load-on-satartup>1</load-on-startup>
+	</servlet>
+
+
+		※一度だけ行う初期化処理にServletContextListenerを利用する方法がある（p474)
+
+
+・ServletContextオブジェクトには、Webアプリケーション上のファイルのパスをOS上の物理パスに変換するために
+  getRealPath()メソッドがある
+    →public String getRealPath(String path)
+
+例）
+	ContextFileServlet.java
+		context.getRealPath("/properties/init.properties")
+		//context.getRealPath("/WEB-INF/init.AppInitParamServlet")
+
+	    ※引数のpathには"/"からはじまるコンテキストルート以降からのパスを指定する
+
+
+・クラスパスからファイルを読む(ClasspathFileServlet)
+  →メソッド「URL url = ClasspathFileServlet.class.getResource("init.properties"); //urlを取得
+  			  InputStream in = url.openStream();」 // バイトを読み込むためのクラス = URLを 源とするストリームが作成
+    読み込みURL : C:\eclipse\pleiades\servlet\mores\WEB-INF\classes\init/init.properties
+
+
+【InputStream/OutputStream】（BBSServlet2）
+・おおまかな
+http://ria10.hatenablog.com/entry/20121128/1354081081
+
+・やさしめ、実例
+http://backpaper0.github.io/2015/03/05/io.html
+  →バイナリファイルを読み込む/バイナリファイルを書き出す
+
+
+■HTTPリクエストとレスポンス
+
+・URL情報の取得
+
+GET http://local:8080/mores/hoge.jsp?prm1=value1&prm2=value2 HTTP/1.1
+
+		GET
+		  →getMethod()
+
+		http
+		  →getScheme()
+
+		local
+		  →getHost()
+
+		8080
+		  →getPort()
+
+		/mores
+		  →getContextPath()
+
+		/hoge.jsp
+		  →getServletPath()
+
+		local:8080/mores/hoge.jsp
+		  →getRequestURL()
+
+		mores/hoge.jsp
+		  →getRequestURI()
+
+		prm1=value1&prm2=value2
+		  →getQueryString()
+
+		HTTP/1.1
+		  →getProtocol()
+
+【HTTPリクエスト】(UserInfoServlet)
+・リクエストヘッダを取得するメソッド
+  →String getHeader(String name)
+       引数nameで指定した名前のヘッダの値を取得する
+
+  →Enumeration getHeaders(String name)
+       引数nameで指定した名前のヘッダの値のリストを取得する
+
+  →Enumeration getHeaderNames()
+       ヘッダの名前のリストを取得する
+
+  ※主なメッセージヘッダ p242
+    メッセージヘッダの後にはメッセージボディが続きます。メッセージボディはアップロードされたファイルの取得などに
+    用いる
+
+
+・メッセージボディ
+  →POSTリクエストの場合、この部分の入力パラメータが送信される。GETリクエストの場合はメッセージボディは空になります
+
+  メッセージボディに関連する情報を取得するメソッド
+    →String getContenType()
+    	メッセージボディのMIMEタイプを取得する
+
+    →int getContentLength()
+        メッセージボディの長さを取得する
+
+    →BufferedReader getReader() throws IOEception
+        メッセージボディを読み込む文字列のリーダーを取得する
+
+    →ServletInputStream getInputStream() throws IOException
+        メッセージボディを読み込むバイナリデータの入力ストリームを取得する
+
+
+・その他の情報
+  →HttpServletRequestクラスのメソッドを利用してIPアドレスに関する以下の情報を取得できます
+
+	  String getRemoteAddr()
+	     クライアントのIPアドレスを取得する
+
+	  String getRemoteHost()
+	     クライアントのIPアドレスをホスト名に変換した文字列を返す
+
+	  int getRemotePort()
+	     クライアントのIPのポート番号を返す
+
+	  String getLocalName()
+	     サーバのホスト名を返す
+
+	  String getLocalAddr()
+	     サーバのIPアドレスを返す
+
+	  String getLocalPort()
+	     サーバのIPのポート番号を返す
+
+
+★HTTPリクエスト、HTTPレスポンス-図と項目
+p242,248参照
+
+
+【HTTPレスポンス】(RedirectServlet)
+
+100-199 お知らせ
+200-299 リクエストの成功
+300-399 ファイルの移動
+400-499 クライアント側のエラー
+500-599 サーバ側のエラー
+
+200 SC_OK  問題なし
+301 SC_MOVED_PERMANETLY  指定されたドキュメントが他の場所にある
+302 SC_MOVED_TEMPORARITY  301類似、指定されたドキュメントが一時的な場所である
+304 SC_NOT_MODIFIED  クライアントがドキュメントをキャッシュしていて変更がない
+404 SC_NOT_FOUND  指定されたページが存在しない
+500 SC_INTERNAL_SERVER_ERROR  CGI（コード）全般のエラー
+
+CGI【Common Gateway Interface】とは、Webサーバが、Webブラウザなどからの要求に応じて、プログラムを起動するための仕組み
+
+・上記、「SC_・・・」のエラーレスポンスをセット
+  →public void setStatus(int sc)
+
+・レスポンスヘッダはHttpServletResponseクラスのsetHeader()メソッドでセットする。nameがヘッダ名、valueが値
+  →public void setHeader(String name, String value)
+        ヘッダ名
+	        Refresh  ドキュメントを更新する秒数。Locationヘッダと併用するほかに現在のページのリロードなどに利用
+			Location ドキュメントのアドレス。300番台のステータスコードにはこのヘッダを付与する
+			Expires  コンテンツの有効期限を示す
+
+
+■練習問題について
+BBSServlet
+  普通のサーブレット
+
+BBSServlet2
+  XML形式のテキストファイルに保存して開くを追加
+
+BBSServlet3
+  IPアドレスとブラウザ情報をBeanに追加、取得
+
+BBSServlet4
+	最後に入力された名前を使用するためにクッキーを利用
+
+
+■クッキーの利用(CookieCounterServlet)
+クッキーとは、クライアント側に保存されるテキストデータ
+
+特徴
+・自分で発行したクッキーしかアクセスできない（ホスト元のみ）
+・サイズや数の制限（300個、1個4Kバイト、サーバ/ドメインごとに20個まで
+・クライアント設定でオフにできる
+・HTTPヘッダにより送信される（Cross Site Scripting/Cross Site Request Forgeriesといった攻撃でセキュリティホールを
+  突かれ、ユーザーのクッキーが盗まれたり、意図せぬスクリプトを実行させられてしまうことがある）
+
+・サーブレットのクッキー
+  →JavaのWebアプリケーションでは一時的な状態はセッションで、永続的なのはデータベースで保存するため、
+    クッキーを扱うことは多くありません
+
+  →javax.Servlet.http.Cookieクラスで操作
+  		リクエストに送られたきたクッキーは、HttpServletRequestクラスのgetCookies()メソッドで取得
+  			public Cokkies[] getCookies()
+
+  		レスポンス時にクッキーを追加する場合は、HttpServletResponseクラスのaddCookies()メソッドを使用
+			public void addCookies(Cookie cookie)
+
+
+・IEでクッキーの確認
+設定 > インタネットオプション > [全般]タブ 設定 > [インターネット一時ファイル]タブ ファイルを表示
+
+・URLリライティング
+スマホやPC等でクッキーが利用できない場合があります。その場合、「同じクライアント」であることを識別しセッションを
+維持するための方法として、「URLリライティング（URL rewriting)」があります。
+HTMLの次のリンク部分にjsessionidというパラメータを付加することで実現されます。付加するには、HttpServletResponseの
+	String encodeURL(String url)
+		を利用します。
+
+例）  カウンタサンプルをクッキーが使えない場面でも有効にするには
+	  CounterServlet2
+	  追記
+		linkUrl = response.encodeURL(linkUrl);//URL rewiring
+
+
+・日本語を保存する場合(CookieListServlet)
+
+例）CookieListServlet
+
+	→クッキー保存前にエンコード
+       	keyParam = URLEncoder.encode(keyParam, "Windows-31J");
+        valueParam = URLEncoder.encode(valueParam, "Windows-31J");
+        Cookie cookie = new Cookie(keyParam, valueParam);
+
+	→クッキー取得後にデコード
+        key = URLDecoder.decode(key, "Windows-31J");
+        value = URLDecoder.decode(value, "Windows-31J");
+
+
+■デプロイについて（WARファイルとデプロイ）
+
+デプロイとは
+  →deployとは、アプリケーションサーバーにWebアプリケーションをインストールすること。配備とも
+    今までは、TomcatのwebappsディレクトリにWebアプリケーションのディレクトリを作成して実装していた
+    これは、サーブレット/JSP標準の方法ではなく、Tomcat独自の簡易デプロイ機能を利用した方法です
+
+デプロイ手順
+  →必要なファイルの作成（web.xml, .class, .jsp, .html, .gif etc...)
+  →パッケージング（作成したファイルをWARファイルにまとめる、JARやZIPと同じ、うぉー）
+  →デプロイ（WARファイルをアプリケーションサーバに配置、必要に応じてアプリケーションサーバとWebサーバのリソース
+  			  （データソース、EJB, JXM)のマッピングを行ったり、アプリケーションサーバの拡張設定を行ったりします）
+
+
+・Managerアプリケーション経由のデプロイ
+  →Webアプリケーションの管理ツールで、デプロイ、リロードなどを行うためのツール
+
+◆ユーザー登録
+・URL
+<Tomcatをインストールしたディレクトリ>/conf/tomcat-users.xml
+
+	・編集
+	<tomcat-users>
+
+	→
+
+	<tomcat-users>
+		<user username="hoge" passward="hoge" roles="manager" />
+	</tomcat-users>
+
+◆CMD起動
+	cd C:\eclipse\pleiades\servlet\mores
+
+	コマンド「jar cvf depapp.war .」
+	説明「jar作成 > 圧縮 > depapp.war作成 > .配下ファイルすべて」
+
+◆デプロイ
+ロカールPC上で作業を行う場合は、「warファイルを単にwebappにコピー」してもデプロイになります
+「デプロイツールを使う」は、「managerアプリケーション」からデプロイします
+
+・URL
+http://localhost:8080/manager/html/
+
+WARファイルの配備
+	アップロードするWARファイルの選択
+		C:\eclipse\pleiades\servlet\mores\depapp.war
+			配備
+				アプリケーション > パス 「/depapp」
+
+アクセス
+	コンテキストパス
+	http://localhost:8080/depapp
+
+	成功
+	http://localhost:8080/depapp/servlet/init.InitParamServlet
+
+まとめ
+	この方法では、HTTP経由でWARファイルのアップロードを行っているのでローカルPCではなく、リモートのサーバにデプロイ
+	することも花押です。このようにサーバを起動したままでアプリケーションのデプロイを行うことは「ホットデプロイ」
+	と呼ばれる。
+
+
+◆アンデプロイ
+
+後始末
+	無駄にアプリケーションを増やすと、Tomcatの動作が重くなるので、depappはアンデプロイしましょう。
+
+・URL
+http://localhost:8080/manager/html/
+
+アプリケーション > パス 「/depapp」
+	配備解除
+
+
+まとめ
+このように「標準の手順」は"WARにパッケージングしてデプロイツールでデプロイ"という手順であることを覚えておいてください
+ただし、開発中に、JSPの1行を修正しただけで、毎回WARにしてデプロイを繰り返すのは効率的ではないので、
+多くのアプリケーションサーバでは、Tomcatの簡易デプロイと同等の仕組みが提供されています。開発中はこのような
+簡易デプロイで開発を行い、リリース時はWARファイルを作成し、運用時にはWARファイルをデプロイして利用するという
+使い分けが一般的です
+
+
+【Tomcatのコンテキストファイル】
+Webアプリケーションの設定は、コンテキストファイル（Context.xml)
+サーブレット/JSP標準の設定は、web.xml
+
+Path
+<Tomcatのディレクトリ>/conf/Catalina/localhost/xxx.xml (xxxは任意）
+<Webアプリケーション>/META-INF/context.xml
+
+コンテキストファイルを利用したデプロイ
+コンテキストファイルのdocBase属性を使って、任意の場所のWebアプリケーションをwebbapp配下にコピーすることなしに
+実行できます
+
+・URL
+<Tomcatのディレクトリ>/conf/Catalina/localhost/more.xml
+
+・編集
+	<Context path="/mores" reloadable"true"
+	docBase="C:\servletbook\eclipse\workspace\mores"
+	workdir="C:\servletbook\eclipse\workspace\mores\work" />
+
+・説明
+path
+	コンテキストパス
+docBase
+	Webアプリケーションを配置しているディレクトリのパス
+reloadable
+	オートリロードの設定
+workDir
+	JSPサーブレットなどが出力される作業ディレクトリのパス
+
+
+・server.xmlとコンテキストファイル
+	Tomcat5以前は、server.xmlにContext要素の記述を行っていました。Tomcat5以降もserver.xmlにContext要素の記述は
+	可能ですが、server.xmlではなくコンテキストファイルを利用することが推奨されています。
+
+・Webアプリケーションの「標準」と「独自」の設定
+	web.xmlは「標準」
+	コンテキストファイルはTomcat「独自」

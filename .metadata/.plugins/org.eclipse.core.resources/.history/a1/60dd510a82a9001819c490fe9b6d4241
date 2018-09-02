@@ -1,0 +1,68 @@
+
+-------------Tomcat6.0-----------------
+
+
+-------------------------もっとJSP-------------------------------
+
+■WEBの参照URL
+http://localhost:8080/morej/include/include_action.jsp
+http://localhost:8080/morej/include/include_directive.jsp
+http://localhost:8080/morej/plugin.jsp
+http://localhost:8080/morej/el/hello.jsp
+http://localhost:8080/morej/el/hello2.jsp
+http://localhost:8080/morej/el/access.jsp
+http://localhost:8080/morej/el/collection.jsp
+http://localhost:8080/morej/el/enzan.jsp
+http://localhost:8080/morej/el/mondai.jsp
+http://localhost:8080/morej/jtsl/hello.jsp
+http://localhost:8080/morej/jtsl/hello.jsp
+http://localhost:8080/morej/jtsl/ctrl.jsp
+http://localhost:8080/morej/jtsl/mondai.jsp
+
+
+■Invokerの設定（web.xmlの省略）
+Tomcat6.0まで可能
+
+【参考URL】
+https://www.javadrive.jp/servlet/webxml/index3.html
+
+
+アクションによるインクルード(include_action.jsp)
+→動的
+	タイミング : リクエスト時
+
+ディレクトディブによるインクルード（include_directive.jsp)
+→静的
+	タイミング：JSPソースファイル → ココ! → サーブレットのソース → サーブレットのクラス
+
+
+■EL式
+取得されるスコープの順番
+ページ → リクエスト → セッション → アプリケーション
+最初に見つかったオブジェクトが取得
+
+
+■JSTL
+JavaServer Pages Standard Tag Library
+→カスタムタグをまとめたもの
+
+Jarにまとめれているもの
+・タグのクラスファイル
+・tld(タグライブラリディスクリプタ Tag Library Descriptor)
+
+1.JARファイルをクラスパスに配置する（WEB-INF/lib)
+2.JSPでtaglib宣言を行い利用する
+
+<%taglib prefix="c" uri="http://..." %>
+prefix属性は、接頭辞（プレフィックス）を指定する。慣用的にJSTLのCoreタグは「c」とする
+
+※カスタムタグの中には、JARファイルの中にTLDファイルが含まれていない、カバーされていないことがあります
+  その場合、別途配置する必要があります。自分で配置する場合は、配置の仕方によってtaglibのディレクティブのuri属性の
+  指定方法が異なります
+  詳細は、p331-334
+
+  ・パスで直接指定
+  ・web.xmlでマッピング
+  ・デフォルトのURIを指定
+
+

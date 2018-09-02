@@ -1,0 +1,53 @@
+
+-------------Tomcat6.0-----------------
+
+
+-------------------------もっとJSP-------------------------------
+
+■WEBの参照URL
+http://localhost:8080/morej/include/include_action.jsp
+http://localhost:8080/morej/include/include_directive.jsp
+http://localhost:8080/morej/plugin.jsp
+http://localhost:8080/morej/el/hello.jsp
+http://localhost:8080/morej/el/hello2.jsp
+http://localhost:8080/morej/el/access.jsp
+http://localhost:8080/morej/el/collection.jsp
+http://localhost:8080/morej/el/enzan.jsp
+http://localhost:8080/morej/el/mondai.jsp
+http://localhost:8080/morej/jtsl/hello.jsp
+
+
+■Invokerの設定（web.xmlの省略）
+Tomcat6.0まで可能
+
+【参考URL】
+https://www.javadrive.jp/servlet/webxml/index3.html
+
+
+アクションによるインクルード(include_action.jsp)
+→動的
+	タイミング : リクエスト時
+
+ディレクトディブによるインクルード（include_directive.jsp)
+→静的
+	タイミング：JSPソースファイル → ココ! → サーブレットのソース → サーブレットのクラス
+
+
+■EL式
+取得されるスコープの順番
+ページ → リクエスト → セッション → アプリケーション
+最初に見つかったオブジェクトが取得
+
+
+■JSTL
+JavaServer Pages Standard Tag Library
+→カスタムタグをまとめたもの
+
+Jarにまとめれているもの
+・タグのクラスファイル
+・tld(タグライブラリディスクリプタ Tag Library Descriptor)
+
+1.JARファイルをクラスパスに配置する（WEB-INF/lib)
+2.JSPでtaglib宣言を行い利用する
+
+

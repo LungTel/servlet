@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_131" class="java.beans.XMLDecoder">
+ <object class="java.util.Vector">
+  <void method="add">
+   <object class="cookie.BBSMessage">
+    <void property="message">
+     <string></string>
+    </void>
+    <void property="remoteAddress">
+     <string>0:0:0:0:0:0:0:1</string>
+    </void>
+    <void property="user">
+     <string>aa</string>
+    </void>
+    <void property="userAgent">
+     <string>Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko</string>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

@@ -1,0 +1,16 @@
+package snippet;
+
+public class Snippet {
+	public static void main(String[] args) {
+		<servlet>
+		 <servlet-name>HelloServlet</servlet-name>
+		 <servlet-class>foo.HelloServlet</servlet-class>
+		</servlet>
+		
+		<servlet-mapping>
+		 <servlet-name>HelloServlet</servlet-name>
+		 <url-pattern>/HelloServlet</url-pattern>
+		</servlet-mapping>
+	}
+}
+

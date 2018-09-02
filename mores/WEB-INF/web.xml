@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!--
+ Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee
+   http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
+  version="2.4">
+
+<!--
+	<filter>
+	 <filter-name>EncodingFilter</filter-name>
+	 <filter-class>filter.EncodingFilter</filter-class>
+	</filter>
+ -->
+
+ 	<context-param>
+ 		<param-name>appkey1</param-name>
+ 		<param-value>appvalue1</param-value>
+ 	</context-param>
+ 	<context-param>
+ 		<param-name>appkey2</param-name>
+ 		<param-value>appvalue2</param-value>
+ 	</context-param>
+
+
+	<filter>
+	 <filter-name>EncodingFilter</filter-name>
+	 <filter-class>filter.EncodingFilter2</filter-class>
+	 <init-param>
+	 	<param-name>encode</param-name>
+	 	<param-value>Windows-31J</param-value>
+	 </init-param>
+	</filter>
+
+	<!--mappingのコメントアウトでfilterオフ -->
+	<filter-mapping>
+	 <filter-name>EncodingFilter</filter-name>
+	 <url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+
+	<servlet>
+	 <servlet-name>HelloServlet</servlet-name>
+	 <servlet-class>foo.HelloServlet</servlet-class>
+	</servlet>
+
+	<servlet>
+	 <servlet-name>InitParamServlet</servlet-name>
+	 <servlet-class>init.InitParamServlet</servlet-class>
+	 <init-param>
+		 <param-name>key1</param-name>
+		 <param-value>value1</param-value>
+	 </init-param>
+	 <init-param>
+		 <param-name>key2</param-name>
+		 <param-value>value2</param-value>
+	 </init-param>
+	</servlet>
+
+	<servlet>
+	 <servlet-name>AppInitParamServlet</servlet-name>
+	 <servlet-class>init.AppInitParamServlet</servlet-class>
+	</servlet>
+
+
+	<servlet-mapping>
+	 <servlet-name>HelloServlet</servlet-name>
+	 <url-pattern>/HelloServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+	 <servlet-name>InitParamServlet</servlet-name>
+	 <url-pattern>/servlet/init.InitParamServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+	 <servlet-name>AppInitParamServlet</servlet-name>
+	 <url-pattern>/servlet/init.AppInitParamServlet</url-pattern>
+	</servlet-mapping>
+
+
+<!-- URL : C:\eclipse\pleiades\tomcat\6\conf\web.xml
+	<session-config>
+		<session-timeout>5</session-timeout>
+	</session-config>
+-->
+
+
+</web-app>

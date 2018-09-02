@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy element &apos;URL.txt&apos; to &apos;dbweb&apos;&#x0D;&#x0A;- 元のプロジェクト: &apos;basic&apos;&#x0D;&#x0A;- 宛先要素: &apos;dbweb&apos;&#x0D;&#x0A;- オリジナル要素: &apos;URL.txt&apos;" description="ファイルをコピー" destination="=dbweb" element1="URL.txt" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1535850155794" units="0" version="1.0"/>
+</session>

@@ -1,0 +1,10 @@
+eclipse.preferences.version=1
+encoding//WEB-INF/src/dispatch=MS932
+encoding//WEB-INF/src/filter=MS932
+encoding//WEB-INF/src/input/MethodServlet.java=MS932
+encoding//WEB-INF/src/reqattr=MS932
+encoding//WEB-INF/src/session=MS932
+encoding//WEB-INF/src/validate=MS932
+encoding//WEB-INF/src/validate/EtoServlet.java=MS932
+encoding//WEB-INF/src/validate/EtoServlet2.java=MS932
+encoding//WEB-INF/web.xml=MS932

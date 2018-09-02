@@ -1,0 +1,93 @@
+
+【HSQL】
+
+ダウンロード
+http://hsqldb.org/
+
+ZIPファイル
+C:\Users\win\Desktop\Servlet\hsqldb-2.4.0.zip
+
+インストール先
+C:\hsqldb-2.4.0
+
+
+データベースのデータ格納先
+C:\hsqldb-2.4.0\hsqldb\mydb
+
+run.bat
+java -cp ..\lib\hsqldb.jar org.hsqldb.server.Server -database mydb
+
+run.batが起動中にrunmanager.bat
+java -cp ..\lib\hsqldb.jar org.hsqldb.util.DatabaseManager
+
+	オプション
+		Type : HSQL Database Engine Server
+		Dirver : org.hsqldb.jdbcDriver
+		URL : jdbc:hsql:hsql://localhost/
+		User : SA
+		PassWord : ""
+
+
+------------------------------練習文--------------------------------------
+
+■テーブル定義
+
+【テーブル作成 CREATE TABLE】
+	CREATE TABLE ACCOUNT(
+		ID INTEGER PRIMARY KEY,
+		NAME VARCHAR(100),
+		MONEY INTEGER
+		);
+
+
+【テーブル削除 DROP TABLE】
+	DROP TABLE ACCOUNT;
+
+
+■データ操作
+
+【挿入 INSERT】
+	INSERT INTO ACCOUNT VALUES(1, 'ボブ', 1000);
+	INSERT INTO ACCOUNT VALUES(2, 'パトリック', 2000);
+	INSERT INTO ACCOUNT VALUES(3, 'サンディー', 3000);
+
+【検索 SELECT】
+	SELECT * FROM ACCOUNT;
+
+	列の指定
+	SELECT NAME,MONEY FROM ACCOUNT;
+
+	条件の指定
+		一致
+		SELECT * FROM ACCOUNT WHERE NAME = 'ボブ';
+
+		部分一致
+		SELECT * FROM ACCOUNT WHERE NAME LIKE 'パト%';
+
+		大小条件
+		SELECT * FROM ACCOUNT WHERE MONEY < 3000;
+
+	条件のANDとOR
+		AND条件（かつ）
+		SELECT * FROM ACCOUNT WHERE NAME = 'ボブ' AND MONEY < 5000;
+
+		OR条件(または）
+		SELECT * FROM ACCOUNT WHERE NAME = 'ボブ' OR MONEY < 3000;
+
+【更新 UPDATE】
+	UPDATE ACCOUNT SET MONEY = 1000;
+
+	条件付き更新
+	UPDATE ACCOUNT SET MONEY = 2000 WHERE ID = 1;
+
+【削除 DELETE】
+	DELETE FROM ACCOUNT;
+
+	条件付き削除
+	DELETE FROM ACCOUNT WHERE ID = 1;
+
+
+
+
+
+
