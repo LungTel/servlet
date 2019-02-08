@@ -13,7 +13,7 @@ public class Servlet3A extends HttpServlet {
     public void doGet(HttpServletRequest request,
             HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         SampleBean bean = new SampleBean();
         bean.setMessage("‚»‚¤‚Å‚Á‚©");
         request.setAttribute("bean", bean);

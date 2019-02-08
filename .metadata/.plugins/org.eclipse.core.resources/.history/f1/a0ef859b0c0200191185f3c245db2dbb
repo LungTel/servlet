@@ -1,0 +1,98 @@
+http://localhost:8080/yoteihyo/hello.jsp
+http://localhost:8080/yoteihyo/itiran.jsp
+
+１３９７
+
+５０００
+15日
+
+弁護士
+
+メヂカル　レッカー
+
+13000
+8780
+7670
+
+
+SQLテーブル作成(出欠表の作成：幹事）
+
+CREATE TABLE YOTEI (
+  ID    INTEGER NOT NULL IDENTITY,
+  NAME VARCHAR(256),
+  DETAIL VARCHAR(256),
+  NITI VARCHAR(256),
+  DATE DATETIME
+)
+
+ID
+NAME
+DETAIL
+DATE
+
+
+select * from YOTEI;
+delete from YOTEI where ID > 3;
+
+
+
+    $('#button').on('click', function() {
+  	  alert("クリックされました");
+  	  return;
+  	});
+
+
+SQLテーブル作成(出欠可否の作成：参加者）
+
+CREATE TABLE PRESENT (
+  ID    INTEGER NOT NULL IDENTITY,
+  IDNO	INTEGER,
+  NAME VARCHAR(256),
+  NITI1 VARCHAR(256),
+  NITI2 VARCHAR(256),
+  NITI3 VARCHAR(256),
+  NITI4 VARCHAR(256),
+  NITI5 VARCHAR(256),
+  NITI6 VARCHAR(256),
+  NITI7 VARCHAR(256),
+  NITI8 VARCHAR(256),
+  PANDC1 VARCHAR(256),
+  PANDC2 VARCHAR(256),
+  PANDC3 VARCHAR(256),
+  PANDC4 VARCHAR(256),
+  PANDC5 VARCHAR(256),
+  PANDC6 VARCHAR(256),
+  PANDC7 VARCHAR(256),
+  PANDC8 VARCHAR(256),
+  DATE DATETIME
+)
+
+ID
+IDNO
+NAME
+NITI1
+NITI2
+NITI3
+NITI4
+NITI5
+NITI6
+NITI7
+NITI8
+PANDC1
+PANDC2
+PANDC3
+PANDC4
+PANDC5
+PANDC6
+PANDC7
+PANDC8
+DATE DATETIME
+
+select * from PRESENT;
+delete from PRESENT where ID > 3;
+delete from PRESENT where ID = 1;
+
+DROP TABLE テーブル名;
+DROP TABLE PRESENT;
+
+

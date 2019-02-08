@@ -15,8 +15,8 @@ public class ServletA extends HttpServlet {
             throws ServletException, IOException {
 
         request.setAttribute("message", "–×‚©‚Á‚Ä‚Ü‚Á‚©H");
-        
-        
+
+
         RequestDispatcher dispatcher = request
                 .getRequestDispatcher("/servlet/reqattr.ServletB");
 

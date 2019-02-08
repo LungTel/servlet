@@ -31,11 +31,11 @@ public class CounterServlet extends HttpServlet {
         //セッションにオブジェクトの格納
         session.setAttribute("count", count);
 
-        
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");
-        
+
         //セッションIDの表示
         out.println("<p>sessionId=" + session.getId());
         //カウンタの表示
@@ -46,7 +46,5 @@ public class CounterServlet extends HttpServlet {
         out.println("<p><a href=\"" + linkUrl
                 + "\">RELOAD</a>");
         out.println("</body></html>");
-
     }
-
 }

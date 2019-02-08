@@ -1,0 +1,180 @@
+<!doctype html>
+<%@ page language="java" contentType="text/html; charset=Windows-31J"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="javax.servlet.RequestDispatcher"%>
+<%@page import="javax.servlet.ServletException"%>
+<%@page import="javax.servlet.http.HttpServlet"%>
+<%@page import="javax.servlet.http.HttpServletRequest"%>
+<%@page import="javax.servlet.http.HttpServletResponse"%>
+<%@page import="yoteihyo.PresentVo"%>
+
+<HTML>
+<HEAD>
+<TITLE>参加者確認画面</TITLE>
+
+<style type="text/css">
+
+	.BackLink {
+	margin-top: 50px;
+	}
+
+</style>
+
+</HEAD>
+<link rel="stylesheet" type="text/css" href="/yoteihyo/yoteihyo.css">
+<script type="text/javascript" src="/yoteihyo/js/itiran.js" ></script>
+<script type="text/javascript" src="/yoteihyo/js/jquery-1.8.3.min.js"></script>
+
+<BODY>
+
+<h1>参加者の一覧</h1>
+<%
+	request.setCharacterEncoding("Windows-31J");
+%>
+
+<div id="a-box">
+
+<p><b>参加者の一覧</b> <BR>
+参加者の一覧の検索</p>
+
+<p><input type="text" name="name1" class="size-input-name" maxlength="22"></p>
+
+<jsp:useBean id="lstPresentVo" class="yoteihyo.PresentDataMake"/>
+<%
+	String IDNO = request.getParameter("idNo");
+	List<PresentVo> vo = new ArrayList<PresentVo>();
+	if(!(IDNO == null)){
+		vo = lstPresentVo.SelectData(Integer.parseInt(IDNO));
+	}
+%>
+
+<table class="table1">
+	<tr>
+		<th></th>
+		<th>No.</th>
+		<th>参加者名</th>
+		<th>候補日程1</th>
+		<th>候補日程2</th>
+		<th>候補日程3</th>
+		<th>候補日程4</th>
+		<th>候補日程5</th>
+		<th>候補日程6</th>
+		<th>候補日程7</th>
+		<th>候補日程8</th>
+		<th>〇/×1</th>
+		<th>〇/×2</th>
+		<th>〇/×3</th>
+		<th>〇/×4</th>
+		<th>〇/×5</th>
+		<th>〇/×6</th>
+		<th>〇/×7</th>
+		<th>〇/×8</th>
+		<th>回答日時</th>
+	</tr>
+
+	<% for (int i=0; i < vo.size(); i++){ %>
+		<tr>
+			<td></td>
+			<td><%= vo.get(i).getId() %></td>
+			<td><%= vo.get(i).getName1() %></td>
+			<td><%= vo.get(i).getPresentDay().get(0) %></td>
+			<td><%= vo.get(i).getPresentDay().get(1) %></td>
+			<td><%= vo.get(i).getPresentDay().get(2) %></td>
+			<td><%= vo.get(i).getPresentDay().get(3) %></td>
+			<td><%= vo.get(i).getPresentDay().get(4) %></td>
+			<td><%= vo.get(i).getPresentDay().get(5) %></td>
+			<td><%= vo.get(i).getPresentDay().get(6) %></td>
+			<td><%= vo.get(i).getPresentDay().get(7) %></td>
+
+			<td><%= vo.get(i).getPresentProAndCon().get(0) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(1) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(2) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(3) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(4) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(5) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(6) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(7) %></td>
+
+			<td><%= vo.get(i).getDate() %></td>
+		</tr>
+	<% } %>
+</table>
+
+<form name="ReSubmitForm" method="post" action="/yoteihyo/attendeeItiran.jsp">
+
+<div id="IDNO"></div>
+
+<input type="submit" value="再描画" />
+<!-- http://www.openspc2.org/JavaScript/study/script.html -->
+<!-- https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1318565593 -->
+<script type="text/javascript">
+/*
+一度のみ実行できる関数を作成する
+
+一度のみ実行したい処理が記載された関数 へは引数を渡すことが可能です
+
+引数：
+func :
+一度のみ実行したい処理が記載された関数
+
+notFirstProc : (省略可能)
+２回目以降に、関数が呼び出された場合に実行する処理
+省略された場合、runOnceFunction_NotFirstProcDefault関数の処理が実行されます
+
+戻り値：
+一度のみ実行できる関数
+
+*/
+function createRunOnceFunction(document.ReSubmitForm.submit(), notFirstProc) {
+
+    var run_one_func = document.ReSubmitForm.submit();        // 一度のみ実行できる関数が呼び出されたときに、実際に呼び出される関数を保持
+
+    // 一度のみ実行できる関数を作成し、返却
+    return function () {
+
+        // 2 回目以降に確実に、func が呼び出されないようにするために、
+        // func 呼び出し前に 2 回目以降に関数が呼び出された場合に実行する関数と入れ替える
+        var org_func = run_one_func;
+        run_one_func = (notFirstProc === undefined ?
+            runOnceFunction_NotFirstProcDefault : notFirstProc);
+
+        // 引数付きで、一度のみ実行したい処理　または、2 回目以降の処理を実行し、結果を返す
+        return org_func.apply(this, arguments);
+    }
+}
+
+/*
+２回目以降に、関数が呼び出された場合に実行する処理
+createRunOnceFunction の notFirstProc が省略された場合に使用されます
+*/
+function runOnceFunction_NotFirstProcDefault() {}
+
+</script>
+</form>
+
+<p> <b>管理者権限</b> <BR>
+※削除機能実装</p>
+
+<p><input type="text" name="delete1" maxlength="4">
+～
+<input type="text" name="delete2" maxlength="4"></p>
+
+<p><textarea name="pass" rows="5" cols="36" wrap="hard"></textarea></p>
+<button type="button" id="deleteButton" name="deleteButton" value="">
+<font size="5" color="#333399">削除ボタン</font>
+</button>
+
+<br>
+<%= new Date() %>
+<%= request.getContextPath() %>
+</div>
+
+
+<div id="c-box">
+	<p class="BackLink"><a href="#" onClick="window.close(); return false;">サブウィンドウを閉じる</a></p>
+</div>
+
+</BODY>
+</HTML>

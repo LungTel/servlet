@@ -1,0 +1,19 @@
+package yoteihyo;
+
+
+public class IdNoManagerVo {
+
+	/*
+	 * ƒCƒxƒ“ƒg‚ÌidNo
+	 */
+	Integer idNo = null;
+
+	public Integer getIdNo() {
+		return idNo;
+	}
+
+	public void setIdNo(Integer idNo) {
+		this.idNo = idNo;
+	}
+
+}

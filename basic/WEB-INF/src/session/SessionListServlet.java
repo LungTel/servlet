@@ -19,11 +19,11 @@ public class SessionListServlet extends HttpServlet {
         String keyParam = request.getParameter("key");
         String valueParam = request.getParameter("value");
 
-        HttpSession session = request.getSession();  
+        HttpSession session = request.getSession();
         if(keyParam != null){
         	session.setAttribute(keyParam, valueParam);
         }
-        
+
         response.setContentType("text/html; charset=Windows-31J");
         PrintWriter out = response.getWriter();
         out.println("<html><body>");

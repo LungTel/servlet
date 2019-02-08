@@ -1,0 +1,138 @@
+<!doctype html>
+<%@ page language="java" contentType="text/html; charset=Windows-31J"%>
+<%@page import="java.util.Date"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="javax.servlet.RequestDispatcher"%>
+<%@page import="javax.servlet.ServletException"%>
+<%@page import="javax.servlet.http.HttpServlet"%>
+<%@page import="javax.servlet.http.HttpServletRequest"%>
+<%@page import="javax.servlet.http.HttpServletResponse"%>
+<%@page import="yoteihyo.PresentVo"%>
+
+<HTML>
+<HEAD>
+<TITLE>参加者確認画面</TITLE>
+
+<style type="text/css">
+
+	.BackLink {
+	margin-top: 50px;
+	}
+
+</style>
+
+</HEAD>
+<link rel="stylesheet" type="text/css" href="/yoteihyo/yoteihyo.css">
+<script type="text/javascript" src="/yoteihyo/js/itiran.js" ></script>
+<script type="text/javascript" src="/yoteihyo/js/jquery-1.8.3.min.js"></script>
+
+<BODY>
+
+<h1>参加者の一覧</h1>
+<%
+	request.setCharacterEncoding("Windows-31J");
+%>
+
+<div id="a-box">
+
+<p><b>参加者の一覧</b> <BR>
+参加者の一覧の検索</p>
+
+<p><input type="text" name="name1" class="size-input-name" maxlength="22"></p>
+
+<jsp:useBean id="lstPresentVo" class="yoteihyo.PresentDataMake"/>
+<%
+	String IDNO = request.getParameter("idNo");
+	List<PresentVo> vo = new ArrayList<PresentVo>();
+	if(!(IDNO == null)){
+		vo = lstPresentVo.SelectData(Integer.parseInt(IDNO));
+	}
+%>
+
+<table class="table1">
+	<tr>
+		<th></th>
+		<th>No.</th>
+		<th>参加者名</th>
+		<th>候補日程1</th>
+		<th>候補日程2</th>
+		<th>候補日程3</th>
+		<th>候補日程4</th>
+		<th>候補日程5</th>
+		<th>候補日程6</th>
+		<th>候補日程7</th>
+		<th>候補日程8</th>
+		<th>〇/×1</th>
+		<th>〇/×2</th>
+		<th>〇/×3</th>
+		<th>〇/×4</th>
+		<th>〇/×5</th>
+		<th>〇/×6</th>
+		<th>〇/×7</th>
+		<th>〇/×8</th>
+		<th>回答日時</th>
+	</tr>
+
+	<% for (int i=0; i < vo.size(); i++){ %>
+		<tr>
+			<td></td>
+			<td><%= vo.get(i).getId() %></td>
+			<td><%= vo.get(i).getName1() %></td>
+			<td><%= vo.get(i).getPresentDay().get(0) %></td>
+			<td><%= vo.get(i).getPresentDay().get(1) %></td>
+			<td><%= vo.get(i).getPresentDay().get(2) %></td>
+			<td><%= vo.get(i).getPresentDay().get(3) %></td>
+			<td><%= vo.get(i).getPresentDay().get(4) %></td>
+			<td><%= vo.get(i).getPresentDay().get(5) %></td>
+			<td><%= vo.get(i).getPresentDay().get(6) %></td>
+			<td><%= vo.get(i).getPresentDay().get(7) %></td>
+
+			<td><%= vo.get(i).getPresentProAndCon().get(0) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(1) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(2) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(3) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(4) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(5) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(6) %></td>
+			<td><%= vo.get(i).getPresentProAndCon().get(7) %></td>
+
+			<td><%= vo.get(i).getDate() %></td>
+		</tr>
+	<% } %>
+</table>
+
+<form name="ReSubmitForm" method="post" action="/yoteihyo/attendeeItiran.jsp">
+
+<div id="IDNO"></div>
+
+<input type="submit" value="再描画" />
+<!-- http://www.openspc2.org/JavaScript/study/script.html -->
+<!-- https://detail.chiebukuro.yahoo.co.jp/qa/question_detail/q1318565593 -->
+<script type="text/javascript">document.ReSubmitForm.submit();</script>
+</form>
+
+<p> <b>管理者権限</b> <BR>
+※削除機能実装</p>
+
+<p><input type="text" name="delete1" maxlength="4">
+～
+<input type="text" name="delete2" maxlength="4"></p>
+
+<p><textarea name="pass" rows="5" cols="36" wrap="hard"></textarea></p>
+<button type="button" id="deleteButton" name="deleteButton" value="">
+<font size="5" color="#333399">削除ボタン</font>
+</button>
+
+<br>
+<%= new Date() %>
+<%= request.getContextPath() %>
+</div>
+
+
+<div id="c-box">
+	<p class="BackLink"><a href="#" onClick="window.close(); return false;">サブウィンドウを閉じる</a></p>
+</div>
+
+</BODY>
+</HTML>

@@ -1,5 +1,8 @@
 eclipse.preferences.version=1
+encoding//WEB-INF/src=MS932
+encoding//WEB-INF/src/core/MyApplet.java=MS932
 encoding//WEB-INF/web.xml=MS932
 encoding/attribute.jsp=MS932
 encoding/include=MS932
 encoding/index.html=MS932
+encoding/work=UTF-8

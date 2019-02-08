@@ -1,0 +1,35 @@
+/**
+ * カレンダーを表示する
+ * @url
+ * http://cly7796.net/wp/javascript/create-a-calendar-with-javascript/
+ * jQueryの設置
+ * http://web-pc.net/jquery001
+ * クリック時
+ * http://lifelog.main.jp/wordpress/?p=2146
+ */
+
+window.onload = function() {
+
+	$('#button').on('click', function() {
+
+    	 var $nameValue = $('input[name="yourName"]').val();
+    	 var $gyo = $('input[name="gyo"]').val();
+
+    	 for ( var i = 0 ; i < $gyo ; i++ ){
+    		 var $presentPandC0[i] = $('input[name="presentPandC' + i + '"]').val();
+
+    		 if($presentPandC0[i] == ""){
+    			 alert("出欠日の参加/不参加を入力してください");
+    			 break;
+    		 }
+    	 }
+
+    	if($nameValue == ""){
+   		alert("イベント名を入力してください");
+   		return false;
+   	}
+   });
+
+}
+\
+
