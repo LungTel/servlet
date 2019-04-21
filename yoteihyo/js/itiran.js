@@ -260,5 +260,3 @@ function generate_attendeeItiran(wrapper) {
     element.innerHTML = insertData;
     return element;
 }
-
-
