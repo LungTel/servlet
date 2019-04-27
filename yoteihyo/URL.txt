@@ -16,15 +16,17 @@ http://localhost:8080/yoteihyo/itiran.jsp
 
 
 SQLテーブル作成(出欠表の作成：幹事）
+create database yoteihyo;
 
 CREATE TABLE YOTEI (
-  ID    INTEGER NOT NULL IDENTITY,
+  ID INTEGER NOT NULL IDENTITY,
   NAME VARCHAR(256),
   DETAIL VARCHAR(256),
   NITI VARCHAR(256),
   DATE DATETIME
 )
-
+// mysqlのみ
+// ID INTEGER NOT NULL PRIMARY KEY 
 ID
 NAME
 DETAIL
@@ -66,6 +68,8 @@ CREATE TABLE PRESENT (
   PANDC8 VARCHAR(256),
   DATE DATETIME
 )
+//ID INTEGER NOT NULL PRIMARY KEY,
+
 
 ID
 IDNO
@@ -94,5 +98,3 @@ delete from PRESENT where ID = 1;
 
 DROP TABLE テーブル名;
 DROP TABLE PRESENT;
-
-

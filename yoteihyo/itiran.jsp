@@ -74,14 +74,17 @@ vo = lstYoteihyoVo.SelectData();
 <p> <b>管理者権限</b> <BR>
 ※削除機能実装</p>
 
+<form method="post" action="/yoteihyo/YoteihyoServlet2" method="post" name="form1">
+<% request.setCharacterEncoding("Windows-31J"); %>
 <p><input type="text" name="delete1" maxlength="4">
 ～
 <input type="text" name="delete2" maxlength="4"></p>
 
 <p><textarea name="pass" rows="5" cols="36" wrap="hard"></textarea></p>
-<button type="button" id="deleteButton" name="deleteButton" value="">
+<button type="submit" id="deleteButton" name="deleteButton" value="">
 <font size="5" color="#333399">削除ボタン</font>
 </button>
+</form>
 
 <br>
 <%= new Date() %>

@@ -20,8 +20,8 @@ public class DataMake {
         ResultSet MaxId = smt.executeQuery("SELECT MAX(ID) FROM YOTEI");
 
         //
-        if(MaxId.next()){ yoteihyoVo.setId(MaxId.getInt("C1") + 1); }
-
+        if(MaxId.next()){ yoteihyoVo.setId(MaxId.getInt("MAX(ID)") + 1); }
+       // yoteihyoVo.setId(2);
 
         int count = smt.executeUpdate(
         		"INSERT INTO YOTEI(ID, NAME, DETAIL, NITI, DATE) " +
@@ -34,7 +34,7 @@ public class DataMake {
         System.out.println("update count : " + count);
 
         ResultSet rs = smt.executeQuery(
-        		"SELECT * FROM YOTEI WHERE ID=1");
+        		"SELECT * FROM YOTEI");
 
         if(rs.next()){
 			System.out.println(
@@ -72,5 +72,34 @@ public class DataMake {
         }
 				return lstYoteihyoVo;
 
+    }
+    
+    public static void DeleteData(int start, int end)
+        	throws Exception {
+
+        Connection con = DBManager.getConnection();
+        Statement smt = con.createStatement();
+
+        //ResultSet All = smt.executeQuery("SELECT * FROM YOTEI");
+
+        List<YoteihyoVo> lstYoteihyoVo = new ArrayList<YoteihyoVo>();
+
+        int deleteYotei = smt.executeUpdate(
+        		"DELETE FROM YOTEI " +
+        		"WHERE " +
+        				 "ID BETWEEN " +
+        				 start + " AND " + end );
+        System.out.println("update deleteYoteicount : " + deleteYotei);
+        
+        int deletePresent = smt.executeUpdate(
+        		"DELETE FROM PRESENT " +
+        		"WHERE " +
+        				 "IDNO BETWEEN " +
+        				 start + " AND " + end );
+        System.out.println("update deletePresentcount : " + deletePresent);
+        	
+        smt.close();
+        con.close();
+			//return lstYoteihyoVo;
     }
 }

@@ -14,7 +14,7 @@
 
 <h1>最速！つくれる！カンタン出欠表</h1>
 
-<form method="post" action="/yoteihyo/servlet/yoteihyo.YoteihyoServlet" method="post" name="form1">
+<form method="post" action="/yoteihyo/YoteihyoServlet" method="post" name="form1">
 <% request.setCharacterEncoding("Windows-31J"); %>
 
 <div id="a-box">
@@ -48,7 +48,7 @@
 </div>
 
 <div id="c-box">
-<a href="/yoteihyo/servlet/yoteihyo.ItiranServlet">
+<a href="/yoteihyo/ItiranServlet">
 作成された一覧を閲覧する</a>
 <BR>
 

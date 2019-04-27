@@ -57,7 +57,7 @@ margin-top: 50px;
 
 		<h1>‚ ‚È‚½‚ÍŽQ‰Á‰Â”Û‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢</h1>
 
-		<form method="post" action="/yoteihyo/servlet/yoteihyo.PresentServlet" method="post" name="form1">
+		<form method="post" action="/yoteihyo/PresentServlet" method="post" name="form1">
 
 			<p>–¼‘OF<input type="text" name="yourName" class="size-input-name" maxlength="22"></p>
 

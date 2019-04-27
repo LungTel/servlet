@@ -21,21 +21,55 @@
    http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
   version="2.4">
 
-<!--
-	<filter>
-	 <filter-name>EncodingFilter</filter-name>
-	 <filter-class>filter.EncodingFilter</filter-class>
-	</filter>
- -->
+<servlet>
+    <servlet-name>ItiranServlet</servlet-name>
+    <servlet-class>yoteihyo.ItiranServlet</servlet-class>
+  </servlet>
 
-<!-- 	<servlet>
-	 <servlet-name>HelloServlet</servlet-name>
-	 <servlet-class>yoteihyo.HelloServlet</servlet-class>
-	</servlet>
+  <servlet-mapping>
+    <servlet-name>ItiranServlet</servlet-name>
+    <url-pattern>/ItiranServlet</url-pattern>
+  </servlet-mapping>
 
-	<servlet-mapping>
-	 <servlet-name>HelloServlet</servlet-name>
-	 <url-pattern>/HelloServlet</url-pattern>
-	</servlet-mapping>
+  <servlet>
+    <servlet-name>YoteihyoServlet</servlet-name>
+    <servlet-class>yoteihyo.YoteihyoServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>YoteihyoServlet</servlet-name>
+    <url-pattern>/YoteihyoServlet</url-pattern>
+  </servlet-mapping>
+  
+    <servlet>
+    <servlet-name>YoteihyoServlet2</servlet-name>
+    <servlet-class>yoteihyo.YoteihyoServlet2</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>YoteihyoServlet2</servlet-name>
+    <url-pattern>/YoteihyoServlet2</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PresentDataMake</servlet-name>
+    <servlet-class>yoteihyo.PresentDataMake</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>PresentDataMake</servlet-name>
+    <url-pattern>/PresentDataMake</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>PresentServlet</servlet-name>
+    <servlet-class>yoteihyo.PresentServlet</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>PresentServlet</servlet-name>
+    <url-pattern>/PresentServlet</url-pattern>
+  </servlet-mapping>
+
  -->
 	</web-app>

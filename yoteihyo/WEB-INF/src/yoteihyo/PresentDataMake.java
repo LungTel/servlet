@@ -19,7 +19,7 @@ public class PresentDataMake {
         ResultSet MaxId = smt.executeQuery("SELECT MAX(ID) FROM PRESENT");
 
         // HSQL Database Managerで「SELECT MAX(ID) FROM YOTEI」を実行したら、C1と出るよ（idはint型で登録されている）
-        if(MaxId.next()){ presentVo.setId(MaxId.getInt("C1") + 1); }
+        if(MaxId.next()){ presentVo.setId(MaxId.getInt("MAX(ID)") + 1); }
 
         int count = smt.executeUpdate(
         		"INSERT INTO PRESENT(ID, IDNO, NAME, NITI1, NITI2, NITI3, NITI4, NITI5, NITI6, NITI7, NITI8, PANDC1, PANDC2, PANDC3, PANDC4, PANDC5, PANDC6, PANDC7, PANDC8, DATE) " +
